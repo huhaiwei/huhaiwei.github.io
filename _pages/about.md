@@ -27,7 +27,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi, I'm Haiwei! I'm a linguistics PhD student at Tulane University with a background in computer science, economics, and statistics. My interests include low-resource NLP; morphology, semantics, & syntax; language documentation and revitalisation; and speech community-centered language technologies. 
+Hi, I'm Haiwei! I'm a linguistics PhD student at Tulane University with a background in computer science, economics, and statistics. My interests include low-resource NLP; morphology, semantics, & syntax; language documentation and revitalisation; and speech community-centered language technologies.
 
 I'm a student of Kaqchikel, K'iche', Maaya T'aan, and Vietnamese. I also speak Chinese, English, Portuguese, Spanish, and some Gan Chinese.
 
