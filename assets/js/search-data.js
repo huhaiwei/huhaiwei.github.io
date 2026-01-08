@@ -10,8 +10,8 @@ ninja.data = [{
       window.location.href = "/";
     },
   },{id: "nav-cv",
-          title: "cv",
-          description: "Download a copy of my resume using the button at the top right.",
+          title: "CV",
+          description: "",
           section: "Navigation",
           handler: () => {
             window.location.href = "/cv/";
