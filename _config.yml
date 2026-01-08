@@ -6,13 +6,13 @@ title: haiwei hu 🌱 # the website title (if blank, full name will be used inst
 first_name: Haiwei
 middle_name:
 last_name: Hu
-contact_note: ""
+contact_note: "feel free to email me at hhu8 at tulane dot edu"
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Linguistics PhD student at Tulane University with a background in computer science, economics, and statistics. Interested in low-resource NLP; morphology, semantics, & syntax; language documentation and revitalisation; and speech community-centered language technologies. Student of Kaqchikel, K'iche', and Maaya T'aan.
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
-  Photos from <a href="https://unsplash.com" target="_blank">Unsplash</a>.
+  Photos from <a href="https://unsplash.com" target="_blank">Unsplash</a> and Keric Chea.
 keywords: computational-linguistics, mayan, k'iche', kaqchikel
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: 🐣 # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
