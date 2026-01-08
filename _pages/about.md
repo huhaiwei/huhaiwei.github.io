@@ -2,7 +2,8 @@
 layout: about
 title: about
 permalink: /
-subtitle: trải qua một cuộc bể dâu, những điều trông thấy mà đau đớn lòng. # <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
+subtitle: email me! hhu8 at tulane dot edu
+ # <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
 
 profile:
   align: right
@@ -27,9 +28,9 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi, I'm Haiwei! I'm a linguistics PhD student at Tulane University with a background in computer science, economics, and statistics. My interests include low-resource NLP; morphology, semantics, & syntax; language documentation and revitalisation; and speech community-centered language technologies.
+Hi, I'm Haiwei! I'm a linguistics PhD student at Tulane University with a background in computer science, economics, and statistics. My interests include low-resource NLP; morphology, semantics, & syntax; language documentation and revitalisation; and speech community-centered language technologies. 
 
-I'm a student of Kaqchikel, K'iche', Maaya T'aan, and Vietnamese. I also speak Chinese, English, Portuguese, Spanish, and some Gan Chinese.
+I'm a student of Kaqchikel, K'iche', and Maaya T'aan. I also speak Chinese, English, Portuguese, Spanish, and some Gan Chinese and Vietnamese.
 
 <!-- Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically. -->
 

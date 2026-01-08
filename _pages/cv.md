@@ -1,11 +1,11 @@
 ---
-layout: cv
+layout: page
+title: CV
 permalink: /cv/
-title: cv
 nav: true
 nav_order: 5
-cv_pdf: "Haiwei Hu Resume.pdf" # you can also use external links here
-description: Download a copy of my resume using the button at the top right.
-toc:
-  sidebar: left
 ---
+
+<a href="/assets/pdf/Haiwei Hu Resume.pdf" target="_blank">
+📄 Download my CV (PDF)
+</a>

@@ -6,7 +6,7 @@ title: haiwei hu 🌱 # the website title (if blank, full name will be used inst
 first_name: Haiwei
 middle_name:
 last_name: Hu
-contact_note: "feel free to email me at hhu8 at tulane dot edu"
+contact_note:
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Linguistics PhD student at Tulane University with a background in computer science, economics, and statistics. Interested in low-resource NLP; morphology, semantics, & syntax; language documentation and revitalisation; and speech community-centered language technologies. Student of Kaqchikel, K'iche', and Maaya T'aan.
 footer_text: >
