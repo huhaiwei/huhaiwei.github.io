@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: email me! hhu8 at tulane dot edu
+subtitle: email me at hhu8 at tulane dot edu
  # <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
 
 profile:
