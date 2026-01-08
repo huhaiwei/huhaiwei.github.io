@@ -10,7 +10,7 @@ ninja.data = [{
       window.location.href = "/";
     },
   },{id: "nav-cv",
-          title: "CV",
+          title: "CV 😸",
           description: "",
           section: "Navigation",
           handler: () => {
