@@ -6,6 +6,6 @@ nav: true
 nav_order: 5
 ---
 
-<a href="/assets/pdf/Haiwei Hu Resume.pdf" target="_blank">
+<a href="/assets/pdf/Haiwei Hu Resume Public.pdf" target="_blank">
 📄 download my cv (pdf)
 </a>
