@@ -9,7 +9,14 @@ ninja.data = [{
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-cv",
+  },{id: "nav-biloxi-dictionary",
+          title: "Biloxi Dictionary",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/dictionary/";
+          },
+        },{id: "nav-cv",
           title: "CV 😸",
           description: "",
           section: "Navigation",
