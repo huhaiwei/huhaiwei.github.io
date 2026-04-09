@@ -15,7 +15,11 @@ nav: true
 
 <div id="dictionary-content" style="display: none;" markdown="1">
 
-Welcome to the digital Biloxi dictionary.
+Welcome to the digital Biloxi dictionary, a work in progress based on data from Kaufman's (2020) *Kadakathi Tanêks-Tąyosą*. You can search for Biloxi words or their English translations below. 
+
+> **Outstanding issues:**
+> * PDF parsing failing at certain multi-line entries.
+> * Certain "parts of speech" not recognised as such (DIR/LOC, prefixes, etc).
 
 <style>
   #search { 
@@ -29,6 +33,58 @@ Welcome to the digital Biloxi dictionary.
     border-radius: 5px;
   }
 
+  .dict-entry { 
+    border-bottom: 1px solid var(--global-divider-color); 
+    padding: 15px 10px; 
+    margin-bottom: 15px; 
+    border-radius: 5px;
+    transition: background-color 1s ease-out;
+  }
+
+  .dict-entry h3 { 
+    margin: 0 0 10px 0; 
+  }
+
+  .dict-source { 
+    color: var(--global-text-color-light); 
+    font-size: 0.85em; 
+    display: block;
+    margin-top: 10px;
+  }
+
+  .dict-conjugation {
+    margin-top: 10px;
+    font-size: 0.9em;
+    background-color: var(--global-bg-color);
+    border: 1px solid var(--global-divider-color);
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+  }
+
+  .dict-conjugation table {
+    margin-bottom: 0;
+  }
+
+  .dict-conjugation th, .dict-conjugation td {
+    padding: 2px 15px 2px 0;
+    border: none;
+  }
+
+  .dict-related {
+    margin-top: 15px;
+  }
+
+  .dict-related a {
+    color: var(--global-theme-color);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .dict-related a:hover {
+    color: var(--global-hover-color);
+  }
+
   .char-btn:hover {
     background-color: var(--global-divider-color);
   }
@@ -36,7 +92,7 @@ Welcome to the digital Biloxi dictionary.
 
 <label style="display:block; margin-bottom:10px;">
   <input type="checkbox" id="strict-toggle" />
-  Strict matching (exact characters)
+  Strict matching (exact characters). When not enabled, searching for "a" will return results for ą, ą, etc (and vice versa).
 </label>
 
 <input id="search" placeholder="Search for a Biloxi word or English translation..." />
