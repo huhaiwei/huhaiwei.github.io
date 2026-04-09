@@ -92,7 +92,7 @@ Welcome to the digital Biloxi dictionary, a work in progress based on data from 
 
 <label style="display:block; margin-bottom:10px;">
   <input type="checkbox" id="strict-toggle" />
-  Strict matching (exact characters). When not enabled, searching for "a" will return results for ą, ą, etc (and vice versa).
+  Strict matching (exact characters). When off, both your query and dictionary entries are stripped of diacritics before matching (e.g. “a” matches “ą”, and “ą” also matches “a”).
 </label>
 
 <input id="search" placeholder="Search for a Biloxi word or English translation..." />
