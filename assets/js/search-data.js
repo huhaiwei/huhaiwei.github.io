@@ -4,20 +4,27 @@ const ninja = document.querySelector('ninja-keys');
 // add the home and posts menu items
 ninja.data = [{
     id: "nav-about",
-    title: "about",
+    title: "about 😸",
     section: "Navigation",
     handler: () => {
       window.location.href = "/";
     },
   },{id: "nav-biloxi-dictionary",
-          title: "Biloxi Dictionary",
+          title: "Biloxi dictionary 🦅",
           description: "",
           section: "Navigation",
           handler: () => {
             window.location.href = "/dictionary/";
           },
+        },{id: "nav-ka-39-apor-fst-demo",
+          title: "Ka&#39;apor fst demo 🌳",
+          description: "Interactive morphological analyser for Ka&#39;apor (Urubu-Ka&#39;apor), a Tupi-Guarani language of Brasil. Implements the Mirror Principle and DM Impoverishment as a finite-state transducer evaluated against a Universal Dependencies treebank.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/kaapor-fst/";
+          },
         },{id: "nav-cv",
-          title: "CV 😸",
+          title: "cv 📄",
           description: "",
           section: "Navigation",
           handler: () => {
