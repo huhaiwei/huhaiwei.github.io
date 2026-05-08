@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Biloxi Dictionary
+title: Biloxi dictionary 🦅
 permalink: /dictionary/
 nav: true
 ---
@@ -119,9 +119,12 @@ let debounceTimer;
 // PASSWORD
 const correctPassword = "ayeki";
 
-if (sessionStorage.getItem("dictAuth") === "true") {
+/* if (sessionStorage.getItem("dictAuth") === "true") {
   unlockDictionary();
-}
+} */
+
+unlockDictionary();
+
 
 document.getElementById("pass-input").addEventListener("keypress", function(event) {
   if (event.key === "Enter") checkPassword();

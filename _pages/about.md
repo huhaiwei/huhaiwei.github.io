@@ -1,6 +1,6 @@
 ---
 layout: about
-title: about
+title: about 😸
 permalink: /
 subtitle: "email: hhu8 at tulane dot edu"
  # <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
