@@ -18,7 +18,7 @@ ninja.data = [{
           },
         },{id: "nav-ka-39-apor-fst-demo",
           title: "Ka&#39;apor fst demo 🌳",
-          description: "Interactive morphological analyser for Ka&#39;apor (Urubu-Ka&#39;apor), a Tupi-Guarani language of Brasil. Implements the Mirror Principle and DM Impoverishment as a finite-state transducer evaluated against a Universal Dependencies treebank.",
+          description: "Interactive morphological analyser for Ka&#39;apor (Urubu-Ka&#39;apor), a Tupi-Guarani language of Brasil.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/kaapor-fst/";
