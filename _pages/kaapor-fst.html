@@ -95,6 +95,24 @@ nav: true
   background: var(--global-code-bg-color, #f8f9fa);
   border: 1px solid var(--global-divider-color, #dee2e6); border-radius: 0.25rem;
 }
+
+/* Force generated morpheme/analysis tables to respect theme colors */
+.mf, #gvb table, #gnb table, #po table {
+  color: var(--global-text-color, #212529);
+}
+#gvb .table, #gnb .table, #po .table,
+#gvb .table td, #gnb .table td, #po .table td,
+#gvb .table th, #gnb .table th, #po .table th {
+  color: var(--global-text-color, #212529) !important;
+  border-color: var(--global-divider-color, #dee2e6) !important;
+  background-color: transparent !important;
+}
+#gvb .thead-light th, #gnb .thead-light th, #po .thead-light th {
+  background-color: var(--global-code-bg-color, #f8f9fa) !important;
+  color: var(--global-text-color-light, #6c757d) !important;
+  border-color: var(--global-divider-color, #dee2e6) !important; 
+}
+
 </style>
 
 <!-- badges -->
