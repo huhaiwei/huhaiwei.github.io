@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+<meta name="description" content="{{ site.description }}">
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+<main>
+
+  <header>
+    <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a> <span aria-hidden="true"></span></h1>
+    <nav>
+      <a href="{{ '/' | relative_url }}">about</a><span class="sep">·</span><a href="{{ '/dictionary/' | relative_url }}">biloxi dictionary</a><span class="sep">·</span><a href="{{ '/kaapor-fst/' | relative_url }}">ka'apor fst demo</a><span class="sep">·</span><a href="{{ '/cv/' | relative_url }}">cv</a>
+    </nav>
+  </header>
+
+  <hr class="rule">
+
+  {{ content }}
+
+  <footer>
+    © {{ site.time | date: '%Y' }} {{ site.title }} · built with jekyll, hosted on github pages
+  </footer>
+
+</main>
+</body>
+</html>
