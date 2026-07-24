@@ -6,12 +6,7 @@ Hi, I'm Haiwei! I'm a linguistics PhD student with a background in computer scie
 
 I'm a student of Kaqchikel, K'iche', and Maaya T'aan. I also speak Chinese, English, Portuguese, Spanish, and some Gan Chinese and Vietnamese.
 
-<div class="meta">
-101 Dinwiddie Hall<br>
-6823 St. Charles Ave.<br>
-New Orleans, Louisiana 70118<br>
-email: hhu8 at tulane dot edu
-</div>
+
 
 <hr class="rule">
 
