@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installing and Deploying · haiwei hu 🍉🐣🌱</title>
+<meta name="description" content="Linguistics PhD student at with a background in computer science, economics, and statistics.  Interested in low-resource NLP; morphology, semantics, & syntax; language documentation and revitalisation;  and speech community-centered language technologies. Student of Kaqchikel, K'iche', and Maaya T'aan.">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+
+  <header>
+    <h1><a href="/">haiwei hu 🍉🐣🌱</a> <span aria-hidden="true"></span></h1>
+    <nav>
+      <a href="/">about</a><span class="sep">·</span><a href="/dictionary/">biloxi dictionary</a><span class="sep">·</span><a href="/kaapor-fst/">ka'apor fst demo</a><span class="sep">·</span><a href="/cv/">cv</a>
+    </nav>
+  </header>
+
+  <hr class="rule">
+
+  <main class="page-content">
+  <h1 id="installing-and-deploying">Installing and Deploying</h1>
+
+<!--ts-->
+
+<ul>
+  <li><a href="#installing-and-deploying">Installing and Deploying</a>
+    <ul>
+      <li><a href="#recommended-approach">Recommended Approach</a></li>
+      <li><a href="#local-setup-on-windows">Local setup on Windows</a></li>
+      <li><a href="#local-setup-using-docker-recommended">Local setup using Docker (Recommended)</a>
+        <ul>
+          <li><a href="#build-your-own-docker-image">Build your own docker image</a></li>
+          <li><a href="#have-bugs-on-docker-image">Have Bugs on Docker Image?</a></li>
+        </ul>
+      </li>
+      <li><a href="#local-setup-with-development-containers">Local Setup with Development Containers</a></li>
+      <li><a href="#local-setup-legacy-no-longer-supported">Local Setup (Legacy, no longer supported)</a></li>
+      <li><a href="#deployment">Deployment</a>
+        <ul>
+          <li><a href="#for-personal-and-organization-webpages">For personal and organization webpages</a></li>
+          <li><a href="#for-project-pages">For project pages</a></li>
+          <li><a href="#enabling-automatic-deployment">Enabling automatic deployment</a></li>
+          <li><a href="#manual-deployment-to-github-pages">Manual deployment to GitHub Pages</a></li>
+          <li><a href="https://www.netlify.com/">Deploy on <a href="https://www.netlify.com/" rel="nofollow">Netlify</a></a></li>
+          <li><a href="#deployment-to-another-hosting-server-non-github-pages">Deployment to another hosting server (non GitHub Pages)</a></li>
+          <li><a href="#deployment-to-a-separate-repository-advanced-users-only">Deployment to a separate repository (advanced users only)</a></li>
+        </ul>
+      </li>
+      <li><a href="#upgrading-from-a-previous-version">Upgrading from a previous version</a></li>
+    </ul>
+  </li>
+</ul>
+
+<!--te-->
+
+<h2 id="recommended-approach">Recommended Approach</h2>
+
+<p>The recommended approach for using <strong>al-folio</strong> is to first create your own site using the template with as few changes as possible, and only when it is up and running customize it however you like. This way it is easier to pinpoint what causes a potential issue in case of a bug. The minimum steps required to create your own site are (<a href="/assets/video/tutorial_al_folio.mp4">video tutorial here</a>):</p>
+
+<ol>
+  <li>Create a new repository using this template. For this, click on <a href="https://github.com/new?template_name=al-folio&amp;template_owner=alshedivat">Use this template -&gt; Create a new repository</a> above the file list. If you plan to upload your site to <code class="language-plaintext highlighter-rouge">&lt;your-github-username&gt;.github.io</code>, note that the name of your repository :warning: <strong>MUST BE</strong> :warning: <code class="language-plaintext highlighter-rouge">&lt;your-github-username&gt;.github.io</code> or <code class="language-plaintext highlighter-rouge">&lt;your-github-orgname&gt;.github.io</code>, as stated in the <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites">GitHub pages docs</a>.</li>
+  <li>In this new repository, go to <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#configuring-the-default-github_token-permissions">Settings -&gt; Actions -&gt; General -&gt; Workflow permissions</a> and give <code class="language-plaintext highlighter-rouge">Read and write permissions</code> to GitHub Actions.</li>
+  <li>Open file <code class="language-plaintext highlighter-rouge">_config.yml</code>, set <code class="language-plaintext highlighter-rouge">url</code> to <code class="language-plaintext highlighter-rouge">https://&lt;your-github-username&gt;.github.io</code> and leave <code class="language-plaintext highlighter-rouge">baseurl</code> <strong>empty</strong> (do NOT delete it), as <code class="language-plaintext highlighter-rouge">baseurl:</code>.</li>
+  <li>Wait until the GitHub action with subtitle <code class="language-plaintext highlighter-rouge">Deploy site</code> finishes (check your repository <strong>Actions</strong> tab), which takes ~4 min. Now, in addition to the <code class="language-plaintext highlighter-rouge">main</code> branch, your repository has a newly built <code class="language-plaintext highlighter-rouge">gh-pages</code> branch.</li>
+  <li>Finally, in the repository page go to <code class="language-plaintext highlighter-rouge">Settings -&gt; Pages -&gt; Build and deployment</code>, make sure that <code class="language-plaintext highlighter-rouge">Source</code> is set to <code class="language-plaintext highlighter-rouge">Deploy from a branch</code> and set the branch to <code class="language-plaintext highlighter-rouge">gh-pages</code> (NOT to main).</li>
+  <li>Wait until the GitHub action <code class="language-plaintext highlighter-rouge">pages-build-deployment</code> finishes (check your repository <strong>Actions</strong> tab), which takes ~45s, then simply navigate to <code class="language-plaintext highlighter-rouge">https://&lt;your-github-username&gt;.github.io</code> in your browser. At this point you should see a copy of the theme’s <a href="https://alshedivat.github.io/al-folio/">demo website</a>.
+After everything is set up, you can download the repository to your machine and start customizing it. To do so, run the following commands:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git clone git@github.com:&lt;your-username&gt;/&lt;your-repo-name&gt;.git
+</code></pre></div></div>
+
+<p>Starting version <a href="https://github.com/alshedivat/al-folio/releases/tag/v0.3.5">v0.3.5</a>, <strong>al-folio</strong> will automatically re-deploy your webpage each time you push new changes to your repository! :sparkles:</p>
+
+<h2 id="local-setup-on-windows">Local setup on Windows</h2>
+
+<p>If you are using Windows, it is <strong>highly recommended</strong> to use <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux (WSL)</a>, which is a compatibility layer for running Linux on top of Windows. You can follow <a href="https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support">these instructions</a> to install WSL and Ubuntu on your machine. You only need to go up to the step 4 of the tutorial (you don’t have to enable the optional <code class="language-plaintext highlighter-rouge">systemd</code> nor the graphical applications), and then you can follow the instructions below to install docker. You can install docker natively on Windows as well, but it has been having some issues as can be seen in <a href="https://github.com/alshedivat/al-folio/issues/1540">#1540</a>, <a href="https://github.com/alshedivat/al-folio/issues/2007">#2007</a>.</p>
+
+<h2 id="local-setup-using-docker-recommended">Local setup using Docker (Recommended)</h2>
+
+<p>Using Docker to install Jekyll and Ruby dependencies is the easiest way.</p>
+
+<p>You need to take the following steps to get <code class="language-plaintext highlighter-rouge">al-folio</code> up and running on your local machine:</p>
+
+<ul>
+  <li>First, install <a href="https://docs.docker.com/get-docker/">docker</a> and <a href="https://docs.docker.com/compose/install/">docker-compose</a>.</li>
+  <li>Finally, run the following command that will pull the latest pre-built image from DockerHub and will run your website.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker compose pull
+<span class="nv">$ </span>docker compose up
+</code></pre></div></div>
+
+<p>Note that when you run it for the first time, it will download a docker image of size 400MB or so. To see the template running, open your browser and go to <code class="language-plaintext highlighter-rouge">http://localhost:8080</code>. You should see a copy of the theme’s demo website.</p>
+
+<p>Now, feel free to customize the theme however you like (don’t forget to change the name!). Also, your changes should be automatically rendered in real-time (or maybe after a few seconds).</p>
+
+<blockquote>
+  <p>Beta: You can also use the slimmed docker image with a size below 100MBs and exact same functionality. Just use <code class="language-plaintext highlighter-rouge">docker compose -f docker-compose-slim.yml up</code></p>
+</blockquote>
+
+<h3 id="build-your-own-docker-image">Build your own docker image</h3>
+
+<blockquote>
+  <p>Note: this approach is only necessary if you would like to build an older or very custom version of al-folio.</p>
+</blockquote>
+
+<p>Build and run a new docker image using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker compose up <span class="nt">--build</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>If you want to update jekyll, install new ruby packages, etc., all you have to do is build the image again using <code class="language-plaintext highlighter-rouge">--force-recreate</code> argument at the end of the previous command! It will download Ruby and Jekyll and install all Ruby packages again from scratch.</p>
+</blockquote>
+
+<p>If you want to use a specific docker version, you can do so by changing <code class="language-plaintext highlighter-rouge">latest</code> tag to <code class="language-plaintext highlighter-rouge">your_version</code> in <code class="language-plaintext highlighter-rouge">docker-compose.yaml</code>. For example, you might have created your website on <code class="language-plaintext highlighter-rouge">v0.10.0</code> and you want to stick with that.</p>
+
+<h3 id="have-bugs-on-docker-image">Have Bugs on Docker Image?</h3>
+
+<p>Sometimes, there might be some bugs in the current docker image. It might be version mismatch or anything. If you want to debug and easily solve the problem for yourself you can do the following steps:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose up -d
+docker compose logs
+</code></pre></div></div>
+
+<p>Then you can see the bug! You can enter the container via this command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose exec -it jekyll /bin/bash
+</code></pre></div></div>
+
+<p>Then you can run the script:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bin/entry_point.sh
+</code></pre></div></div>
+
+<p>You might see problems for package dependecy or something which is not available. You can fix it now by using</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle install
+./bin/entry_point.sh
+</code></pre></div></div>
+
+<p>Most likely, this will solve the problem but it shouldn’t really happen. So, please open a bug report for us.</p>
+
+<h2 id="local-setup-with-development-containers">Local Setup with Development Containers</h2>
+
+<p><code class="language-plaintext highlighter-rouge">al-folio</code> supports <a href="https://containers.dev/supporting">Development Containers</a>.
+For example, when you open the repository with Visual Studio Code (VSCode), it prompts you to install the necessary extension and automatically install everything necessary.</p>
+
+<h2 id="local-setup-legacy-no-longer-supported">Local Setup (Legacy, no longer supported)</h2>
+
+<p>For a hands-on walkthrough of running al-folio locally without using Docker, check out <a href="https://george-gca.github.io/blog/2022/running-local-al-folio/">this cool blog post</a> by one of the community members!</p>
+
+<p>Assuming you have <a href="https://www.ruby-lang.org/en/downloads/">Ruby</a> and <a href="https://bundler.io/">Bundler</a> installed on your system (<em>hint: for ease of managing ruby gems, consider using <a href="https://github.com/rbenv/rbenv">rbenv</a></em>), and also <a href="https://www.python.org/">Python</a> and <a href="https://pypi.org/project/pip/">pip</a> (<em>hint: for ease of managing python packages, consider using a virtual environment, like <a href="https://docs.python.org/pt-br/3/library/venv.html">venv</a> or <a href="https://docs.conda.io/en/latest/">conda</a></em>).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>bundle <span class="nb">install</span>
+<span class="c"># assuming pip is your Python package manager</span>
+<span class="nv">$ </span>pip <span class="nb">install </span>jupyter
+<span class="nv">$ </span>bundle <span class="nb">exec </span>jekyll serve
+</code></pre></div></div>
+
+<p>To see the template running, open your browser and go to <code class="language-plaintext highlighter-rouge">http://localhost:4000</code>. You should see a copy of the theme’s <a href="https://alshedivat.github.io/al-folio/">demo website</a>. Now, feel free to customize the theme however you like. After you are done, remember to <strong>commit</strong> your final changes.</p>
+
+<h2 id="deployment">Deployment</h2>
+
+<p>Deploying your website to <a href="https://pages.github.com/">GitHub Pages</a> is the most popular option.
+Starting version <a href="https://github.com/alshedivat/al-folio/releases/tag/v0.3.5">v0.3.5</a>, <strong>al-folio</strong> will automatically re-deploy your webpage each time you push new changes to your repository <strong>main branch</strong>! :sparkles:</p>
+
+<h3 id="for-personal-and-organization-webpages">For personal and organization webpages</h3>
+
+<ol>
+  <li>The name of your repository <strong>MUST BE</strong> <code class="language-plaintext highlighter-rouge">&lt;your-github-username&gt;.github.io</code> or <code class="language-plaintext highlighter-rouge">&lt;your-github-orgname&gt;.github.io</code>.</li>
+  <li>In <code class="language-plaintext highlighter-rouge">_config.yml</code>, set <code class="language-plaintext highlighter-rouge">url</code> to <code class="language-plaintext highlighter-rouge">https://&lt;your-github-username&gt;.github.io</code> and leave <code class="language-plaintext highlighter-rouge">baseurl</code> empty.</li>
+  <li>Set up automatic deployment of your webpage (see instructions below).</li>
+  <li>Make changes to your main branch, commit, and push!</li>
+  <li>After deployment, the webpage will become available at <code class="language-plaintext highlighter-rouge">&lt;your-github-username&gt;.github.io</code>.</li>
+</ol>
+
+<h3 id="for-project-pages">For project pages</h3>
+
+<ol>
+  <li>In <code class="language-plaintext highlighter-rouge">_config.yml</code>, set <code class="language-plaintext highlighter-rouge">url</code> to <code class="language-plaintext highlighter-rouge">https://&lt;your-github-username&gt;.github.io</code> and <code class="language-plaintext highlighter-rouge">baseurl</code> to <code class="language-plaintext highlighter-rouge">/&lt;your-repository-name&gt;/</code>.</li>
+  <li>Set up automatic deployment of your webpage (see instructions below).</li>
+  <li>Make changes to your main branch, commit, and push!</li>
+  <li>After deployment, the webpage will become available at <code class="language-plaintext highlighter-rouge">&lt;your-github-username&gt;.github.io/&lt;your-repository-name&gt;/</code>.</li>
+</ol>
+
+<h3 id="enabling-automatic-deployment">Enabling automatic deployment</h3>
+
+<ol>
+  <li>Click on <strong>Actions</strong> tab and <strong>Enable GitHub Actions</strong>; do not worry about creating any workflows as everything has already been set for you.</li>
+  <li>Go to <code class="language-plaintext highlighter-rouge">Settings -&gt; Actions -&gt; General -&gt; Workflow permissions</code>, and give <code class="language-plaintext highlighter-rouge">Read and write permissions</code> to GitHub Actions</li>
+  <li>Make any other changes to your webpage, commit, and push to your main branch. This will automatically trigger the <strong>Deploy</strong> action.</li>
+  <li>Wait for a few minutes and let the action complete. You can see the progress in the <strong>Actions</strong> tab. If completed successfully, in addition to the <code class="language-plaintext highlighter-rouge">main</code> branch, your repository should now have a newly built <code class="language-plaintext highlighter-rouge">gh-pages</code> branch. <strong>Do NOT touch this branch!</strong></li>
+  <li>Finally, in the <strong>Settings</strong> of your repository, in the Pages section, set the branch to <code class="language-plaintext highlighter-rouge">gh-pages</code> (<strong>NOT</strong> to <code class="language-plaintext highlighter-rouge">main</code>). For more details, see <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#choosing-a-publishing-source">Configuring a publishing source for your GitHub Pages site</a>.</li>
+</ol>
+
+<p>If you keep your site on another branch, open <code class="language-plaintext highlighter-rouge">.github/workflows/deploy.yml</code> <strong>on the branch you keep your website on</strong> and change <code class="language-plaintext highlighter-rouge">on-&gt;push-&gt;branches</code> and <code class="language-plaintext highlighter-rouge">on-&gt;pull\_request-&gt;branches</code> to the branch you keep your website on. This will trigger the action on pulls/pushes on that branch. The action will then deploy the website on the branch it was triggered from.</p>
+
+<h3 id="manual-deployment-to-github-pages">Manual deployment to GitHub Pages</h3>
+
+<p>If you need to manually re-deploy your website to GitHub pages, go to Actions, click “Deploy” in the left sidebar, then “Run workflow.”</p>
+
+<h3 id="deploy-on-netlify">Deploy on <a href="https://www.netlify.com/">Netlify</a></h3>
+
+<ol>
+  <li><a href="https://github.com/new?template_name=al-folio&amp;template_owner=alshedivat">Use this template -&gt; Create a new repository</a>.</li>
+  <li>Netlify: <strong>Add new site</strong> -&gt; <strong>Import an existing project</strong> -&gt; <strong>GitHub</strong> and give Netlify access to the repository you just created.</li>
+  <li>
+    <p>Netlify: In the deploy settings</p>
+
+    <ul>
+      <li>Set <strong>Branch to deploy</strong> to <code class="language-plaintext highlighter-rouge">main</code></li>
+      <li><strong>Base directory</strong> is empty</li>
+      <li>Set <strong>Build command</strong> to <code class="language-plaintext highlighter-rouge">sed -i "s/^\(baseurl: \).*$/baseurl:/" _config.yml &amp;&amp; bundle exec jekyll build</code></li>
+      <li>Set <strong>Publish directory</strong> to <code class="language-plaintext highlighter-rouge">_site</code></li>
+    </ul>
+  </li>
+  <li>
+    <p>Netlify: Add the following two <strong>environment variables</strong></p>
+
+    <ul>
+      <li>
+        <table>
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code class="language-plaintext highlighter-rouge">JEKYLL_ENV</code></td>
+              <td><code class="language-plaintext highlighter-rouge">production</code></td>
+            </tr>
+            <tr>
+              <td><code class="language-plaintext highlighter-rouge">RUBY_VERSION</code></td>
+              <td>set to the Ruby version found in <code class="language-plaintext highlighter-rouge">.github/workflows/deploy.yml</code> (for example, <code class="language-plaintext highlighter-rouge">3.3.5</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>Netlify: Click <strong>Deploy</strong> and wait for the site to be published. If you want to use your own domain name, follow the steps in <a href="https://docs.netlify.com/domains-https/custom-domains/">this documentation</a>.</li>
+</ol>
+
+<h3 id="deployment-to-another-hosting-server-non-github-pages">Deployment to another hosting server (non GitHub Pages)</h3>
+
+<p>If you decide to not use GitHub Pages and host your page elsewhere, simply run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>bundle <span class="nb">exec </span>jekyll build
+</code></pre></div></div>
+
+<p>which will (re-)generate the static webpage in the <code class="language-plaintext highlighter-rouge">_site/</code> folder.
+Then simply copy the contents of the <code class="language-plaintext highlighter-rouge">_site/</code> directory to your hosting server.</p>
+
+<p>If you also want to remove unused css classes from your file, run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>purgecss <span class="nt">-c</span> purgecss.config.js
+</code></pre></div></div>
+
+<p>which will replace the css files in the <code class="language-plaintext highlighter-rouge">_site/assets/css/</code> folder with the purged css files.</p>
+
+<p><strong>Note:</strong> Make sure to correctly set the <code class="language-plaintext highlighter-rouge">url</code> and <code class="language-plaintext highlighter-rouge">baseurl</code> fields in <code class="language-plaintext highlighter-rouge">_config.yml</code> before building the webpage. If you are deploying your webpage to <code class="language-plaintext highlighter-rouge">your-domain.com/your-project/</code>, you must set <code class="language-plaintext highlighter-rouge">url: your-domain.com</code> and <code class="language-plaintext highlighter-rouge">baseurl: /your-project/</code>. If you are deploying directly to <code class="language-plaintext highlighter-rouge">your-domain.com</code>, leave <code class="language-plaintext highlighter-rouge">baseurl</code> blank, <strong>do not delete it</strong>.</p>
+
+<h3 id="deployment-to-a-separate-repository-advanced-users-only">Deployment to a separate repository (advanced users only)</h3>
+
+<p><strong>Note:</strong> Do not try using this method unless you know what you are doing (make sure you are familiar with <a href="https://help.github.com/en/github/working-with-github-pages/about-github-pages#publishing-sources-for-github-pages-sites">publishing sources</a>). This approach allows to have the website’s source code in one repository and the deployment version in a different repository.</p>
+
+<p>Let’s assume that your website’s publishing source is a <code class="language-plaintext highlighter-rouge">publishing-source</code> subdirectory of a git-versioned repository cloned under <code class="language-plaintext highlighter-rouge">$HOME/repo/</code>.
+For a user site this could well be something like <code class="language-plaintext highlighter-rouge">$HOME/&lt;user&gt;.github.io</code>.</p>
+
+<p>Firstly, from the deployment repo dir, checkout the git branch hosting your publishing source.</p>
+
+<p>Then from the website sources dir (commonly your al-folio fork’s clone):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>bundle <span class="nb">exec </span>jekyll build <span class="nt">--destination</span> <span class="nv">$HOME</span>/repo/publishing-source
+</code></pre></div></div>
+
+<p>This will instruct jekyll to deploy the website under <code class="language-plaintext highlighter-rouge">$HOME/repo/publishing-source</code>.</p>
+
+<p><strong>Note:</strong> Jekyll will clean <code class="language-plaintext highlighter-rouge">$HOME/repo/publishing-source</code> before building!</p>
+
+<p>The quote below is taken directly from the <a href="https://jekyllrb.com/docs/configuration/options/">jekyll configuration docs</a>:</p>
+
+<blockquote>
+  <p>Destination folders are cleaned on site builds</p>
+
+  <p>The contents of <code class="language-plaintext highlighter-rouge">&lt;destination&gt;</code> are automatically cleaned, by default, when the site is built. Files or folders that are not created by your site will be removed. Some files could be retained by specifying them within the <code class="language-plaintext highlighter-rouge">&lt;keep_files&gt;</code> configuration directive.</p>
+
+  <p>Do not use an important location for <code class="language-plaintext highlighter-rouge">&lt;destination&gt;</code>; instead, use it as a staging area and copy files from there to your web server.</p>
+</blockquote>
+
+<p>If <code class="language-plaintext highlighter-rouge">$HOME/repo/publishing-source</code> contains files that you want jekyll to leave untouched, specify them under <code class="language-plaintext highlighter-rouge">keep_files</code> in <code class="language-plaintext highlighter-rouge">_config.yml</code>.
+In its default configuration, al-folio will copy the top-level <code class="language-plaintext highlighter-rouge">README.md</code> to the publishing source. If you want to change this behavior, add <code class="language-plaintext highlighter-rouge">README.md</code> under <code class="language-plaintext highlighter-rouge">exclude</code> in <code class="language-plaintext highlighter-rouge">_config.yml</code>.</p>
+
+<p><strong>Note:</strong> Do <em>not</em> run <code class="language-plaintext highlighter-rouge">jekyll clean</code> on your publishing source repo as this will result in the entire directory getting deleted, irrespective of the content of <code class="language-plaintext highlighter-rouge">keep_files</code> in <code class="language-plaintext highlighter-rouge">_config.yml</code>.</p>
+
+<h2 id="upgrading-from-a-previous-version">Upgrading from a previous version</h2>
+
+<p>If you installed <strong>al-folio</strong> as described above, you can manually update your code by following the steps below:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Assuming the current directory is &lt;your-repo-name&gt;</span>
+<span class="nv">$ </span>git remote add upstream https://github.com/alshedivat/al-folio.git
+<span class="nv">$ </span>git fetch upstream
+<span class="nv">$ </span>git rebase v0.14.6
+</code></pre></div></div>
+
+<p>If you have extensively customized a previous version, it might be trickier to upgrade.
+You can still follow the steps above, but <code class="language-plaintext highlighter-rouge">git rebase</code> may result in merge conflicts that must be resolved.
+See <a href="https://help.github.com/en/github/using-git/about-git-rebase">git rebase manual</a> and how to <a href="https://help.github.com/en/github/using-git/resolving-merge-conflicts-after-a-git-rebase">resolve conflicts</a> for more information.
+If rebasing is too complicated, we recommend re-installing the new version of the theme from scratch and port over your content and changes from the previous version manually. You can use tools like <a href="https://meldmerge.org/">meld</a>
+or <a href="https://winmerge.org/">winmerge</a> to help in this process.</p>
+
+</main>
+
+  <footer>
+    © 2026 haiwei hu 🍉🐣🌱 · built with jekyll, hosted on github pages
+  </footer>
+
+</main>
+</body>
+</html>
