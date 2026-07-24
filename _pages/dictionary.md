@@ -1,8 +1,7 @@
 ---
-layout: page
+layout: default
 title: Biloxi dictionary 🦅
 permalink: /dictionary/
-nav: true
 ---
 
 <div id="password-gate" style="text-align: center; margin-top: 50px;">
