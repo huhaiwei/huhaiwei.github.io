@@ -13,7 +13,11 @@
   <header>
     <h1><a href="/">haiwei hu</a> <span aria-hidden="true"></span></h1>
     <nav>
-      <a href="/">about</a><span class="sep">·</span><a href="/dictionary/">biloxi dictionary</a><span class="sep">·</span><a href="/kaapor-fst/">ka'apor fst demo</a><span class="sep">·</span><a href="/cv/">cv</a>
+      <a href="/">about</a><span class="sep">·</span>
+      <a href="/dictionary/">Biloxi dictionary</a><span class="sep">·</span>
+      <a href="/kaapor-fst/">Ka'apor fst</a><span class="sep">·</span>
+      <a href="/k'iche'-fst/">K'iche' fst</a><span class="sep">·</span>
+      <a href="/cv/">cv</a>
     </nav>
   </header>
 
@@ -265,6 +269,32 @@ document.getElementById('search').addEventListener('input', e => {
         return removeDiacritics(headword).includes(q) ||
                defs.some(d => removeDiacritics(d).includes(q));
       }
+    }).sort((a, b) => {
+      // Normalise headwords the same way the filter does
+      const aHead = strict ? a.headword.toLowerCase() : removeDiacritics(a.headword.toLowerCase());
+      const bHead = strict ? b.headword.toLowerCase() : removeDiacritics(b.headword.toLowerCase());
+
+      const aStarts = aHead.startsWith(q);
+      const bStarts = bHead.startsWith(q);
+      const aContains = aHead.includes(q);
+      const bContains = bHead.includes(q);
+
+      // Tier 0 = starts with, Tier 1 = contains (but not start), Tier 2 = definition only
+      const getPriority = (starts, contains) => {
+        if (starts) return 0;
+        if (contains) return 1;
+        return 2;
+      };
+
+      const aPrio = getPriority(aStarts, aContains);
+      const bPrio = getPriority(bStarts, bContains);
+
+      if (aPrio !== bPrio) {
+        return aPrio - bPrio;
+      }
+
+      // Within the same tier, sort alphabetically by headword
+      return aHead.localeCompare(bHead);
     });
 
     render(filtered);
