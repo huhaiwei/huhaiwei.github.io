@@ -246,6 +246,32 @@ document.getElementById('search').addEventListener('input', e => {
         return removeDiacritics(headword).includes(q) ||
                defs.some(d => removeDiacritics(d).includes(q));
       }
+    }).sort((a, b) => {
+      // Normalise headwords the same way the filter does
+      const aHead = strict ? a.headword.toLowerCase() : removeDiacritics(a.headword.toLowerCase());
+      const bHead = strict ? b.headword.toLowerCase() : removeDiacritics(b.headword.toLowerCase());
+
+      const aStarts = aHead.startsWith(q);
+      const bStarts = bHead.startsWith(q);
+      const aContains = aHead.includes(q);
+      const bContains = bHead.includes(q);
+
+      // Tier 0 = starts with, Tier 1 = contains (but not start), Tier 2 = definition only
+      const getPriority = (starts, contains) => {
+        if (starts) return 0;
+        if (contains) return 1;
+        return 2;
+      };
+
+      const aPrio = getPriority(aStarts, aContains);
+      const bPrio = getPriority(bStarts, bContains);
+
+      if (aPrio !== bPrio) {
+        return aPrio - bPrio;
+      }
+
+      // Within the same tier, sort alphabetically by headword
+      return aHead.localeCompare(bHead);
     });
 
     render(filtered);
