@@ -6,11 +6,14 @@
   --accent: #55613f;
   --accent-soft: #8b9a6c;
   --max: 1000px;
-  --global-bg-color: #ffffff;
-  --global-text-color: #222222;
-  --global-divider-color: #d8d8d8;
-  --global-theme-color: #7a2e2e;
-  --global-code-bg-color: #f5f5f5;
+
+  --global-bg-color: var(--paper);
+  --global-text-color: var(--ink);
+  --global-text-color-light: var(--ink-soft);
+  --global-divider-color: var(--rule);
+  --global-theme-color: var(--accent);
+  --global-hover-color: var(--accent-soft);
+  --global-code-bg-color: rgba(85, 97, 63, 0.06);
 }
 
 * { box-sizing: border-box; }
@@ -192,4 +195,315 @@ footer a { color: inherit; }
 
 #dictionary-content {
   line-height: 1.65;
+}
+
+/* =========================================================
+   Shared tool components (Ka'apor, K'iche', Biloxi)
+   ========================================================= */
+
+.tool-page {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.tool-lead {
+  color: var(--ink-soft);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Inputs -------------------------------------------------- */
+.tool-search {
+  width: 100%;
+  max-width: 700px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+  box-sizing: border-box;
+}
+.tool-search::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.7;
+  font-style: italic;
+}
+.tool-search:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(85, 97, 63, 0.1);
+}
+
+/* Labels -------------------------------------------------- */
+.tool-label {
+  display: block;
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+/* Pills / chips ------------------------------------------- */
+.pill {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(85, 97, 63, 0.08);
+  border: 1px solid rgba(85, 97, 63, 0.2);
+  border-radius: 3px;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-block;
+  transition: background 0.15s;
+}
+.pill:hover {
+  background: rgba(85, 97, 63, 0.15);
+}
+
+/* Tables -------------------------------------------------- */
+.tool-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  background: var(--paper);
+}
+.tool-table th {
+  background: rgba(85, 97, 63, 0.08);
+  color: var(--ink);
+  padding: 0.6rem;
+  text-align: left;
+  font-weight: 600;
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  border-bottom: 1px solid var(--rule);
+}
+.tool-table td {
+  padding: 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+.tool-table tr:hover {
+  background: rgba(85, 97, 63, 0.03);
+}
+
+/* Bars (filters, match keys) ------------------------------ */
+.tool-bar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background: rgba(85, 97, 63, 0.05);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.tool-bar label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  margin: 0;
+}
+.tool-bar input[type="checkbox"] {
+  cursor: pointer;
+}
+
+/* Callouts ------------------------------------------------ */
+.tool-callout {
+  border-left: 3px solid var(--accent);
+  padding: 0.7rem;
+  margin: 1rem 0;
+  background: rgba(85, 97, 63, 0.05);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Scroll wrappers ----------------------------------------- */
+.tool-tbl-wrap {
+  max-height: 1080px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+
+/* Tabs ---------------------------------------------------- */
+.tool-tabs {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2rem;
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+}
+.tool-tabs a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid transparent;
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.tool-tabs a:hover {
+  color: var(--accent);
+}
+.tool-tabs a.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+.tool-tab {
+  display: none;
+}
+.tool-tab.active {
+  display: block;
+}
+
+/* Grids --------------------------------------------------- */
+.tool-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+@media (max-width: 768px) {
+  .tool-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* Status colours ------------------------------------------ */
+.ok  { color: #198754; font-weight: 600; }
+.wrn { color: #e6a817; font-weight: 600; }
+.bad { color: #dc3545; font-weight: 600; }
+.mut { color: var(--ink-soft); }
+/* =========================================================
+   K'iche' parser shared components
+   ========================================================= */
+
+.fst-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  color: var(--ink);
+}
+
+.tool-status {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0.4rem 0;
+  min-height: 1.3em;
+}
+
+.tool-list {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0.5rem 0 1.5rem 0;
+  list-style: none;
+  background: var(--paper);
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+}
+
+.tool-list li {
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.1s;
+}
+
+.tool-list li:last-child {
+  border-bottom: none;
+}
+
+.tool-list li:hover,
+.tool-list li.active {
+  background: rgba(85, 97, 63, 0.06);
+}
+
+.tool-list li.active {
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.tool-list li.no-match {
+  color: var(--ink-soft);
+  font-style: italic;
+  cursor: default;
+}
+
+.tool-list li.no-match:hover {
+  background: transparent;
+}
+
+/* Segmentation display */
+.seg-label {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin: 1rem 0 0.3rem 0;
+  font-weight: 600;
+}
+
+.seg-list {
+  margin-bottom: 1rem;
+}
+
+.seg-chain {
+  margin: 0.3rem 0;
+}
+
+.seg-sep {
+  color: var(--ink-soft);
+  margin: 0 0.3rem;
+  font-size: 0.9rem;
+}
+
+.morpheme {
+  display: inline-block;
+  background: var(--global-code-bg-color);
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  margin: 0.1em;
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  border: 1px solid var(--rule);
+}
+
+/* Featured hints (shared with Ka'apor style) */
+.fst-hint {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.fst-hint code {
+  cursor: pointer;
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  color: var(--accent);
+  background: rgba(85, 97, 63, 0.05);
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.fst-hint code:hover {
+  background: rgba(85, 97, 63, 0.15);
 }

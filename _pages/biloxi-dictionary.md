@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Biloxi dictionary 🦅
-permalink: /dictionary/
+permalink: /biloxi-dictionary/
 ---
 
 <div id="password-gate" style="text-align: center; margin-top: 50px;">

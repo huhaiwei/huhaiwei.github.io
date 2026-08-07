@@ -3,136 +3,20 @@ layout: default
 title: K'iche' fst
 permalink: /k'iche'-fst/
 ---
-<style>
-  .parser-wrap {
-    max-width: 700px;
-    margin: 2em 0;
-  }
-  .parser-wrap input {
-    font-family: inherit;
-    font-size: 1.1em;
-    padding: 0.4em 0.6em;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    max-width: 320px;
-    box-sizing: border-box;
-  }
-  .status {
-    font-size: 0.9em;
-    color: #666;
-    margin: 0.4em 0;
-    min-height: 1.3em;
-  }
-  .featured {
-    margin: 0.75em 0;
-  }
-  .featured-label {
-    font-size: 0.85em;
-    color: #666;
-    margin-bottom: 0.4em;
-  }
-  .featured-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-  .featured-chip {
-    font-family: monospace;
-    font-size: 0.9em;
-    padding: 0.25em 0.6em;
-    background: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .featured-chip:hover {
-    background: #e8e8e8;
-  }
-  .wordlist {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    max-height: 320px;
-    overflow-y: auto;
-    padding: 0;
-    margin: 0.5em 0 1.5em 0;
-    list-style: none;
-    background: #fff;
-  }
-  .wordlist li {
-    padding: 0.35em 0.7em;
-    cursor: pointer;
-    font-family: monospace;
-    font-size: 0.95em;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  .wordlist li:last-child {
-    border-bottom: none;
-  }
-  .wordlist li:hover,
-  .wordlist li.active {
-    background: #f5f5f5;
-  }
-  .wordlist li.active {
-    outline: 1px solid #ccc;
-  }
-  .result {
-    margin-top: 1em;
-  }
-  .result table {
-    border-collapse: collapse;
-    margin-top: 0.5em;
-    font-size: 0.95em;
-  }
-  .result th, .result td {
-    border: 1px solid #ddd;
-    padding: 0.5em 0.8em;
-    text-align: left;
-    vertical-align: top;
-  }
-  .result th {
-    background: #f5f5f5;
-  }
-  .result .no-match {
-    color: #888;
-    font-style: italic;
-  }
-  .seg-label {
-    font-size: 0.9em;
-    color: #666;
-    margin: 1em 0 0.3em 0;
-  }
-  .seg-list {
-    margin-bottom: 1em;
-  }
-  .seg-chain {
-    margin: 0.3em 0;
-  }
-  .seg-sep {
-    color: #999;
-    margin: 0 0.3em;
-    font-size: 0.9em;
-  }
-  .morpheme {
-    display: inline-block;
-    background: #f0f0f0;
-    padding: 0.15em 0.5em;
-    border-radius: 4px;
-    margin: 0.1em;
-    font-family: monospace;
-    font-size: 0.9em;
-  }
-</style>
-<div class="parser-wrap">
-  <input type="text" id="word-input" placeholder="Search K'iche' words…" autocomplete="off">
-  <div class="featured">
-    <div class="featured-label">Try these:</div>
-    <div class="featured-chips" id="featured-chips"></div>
+<div class="tool-page">
+  <div class="tool-grid">
+    <div class="fst-section">
+      <h3>Search</h3>
+      <input type="text" id="word-input" class="tool-search" placeholder="Search K'iche' words…" autocomplete="off">
+      <div class="fst-hint" id="featured-chips"></div>
+      <div id="status" class="tool-status"></div>
+      <ul id="wordlist" class="tool-list"></ul>
+    </div>
+    <div class="fst-section">
+      <h3>Analysis</h3>
+      <div id="output"></div>
+    </div>
   </div>
-  <div id="status" class="status"></div>
-  <ul id="wordlist" class="wordlist"></ul>
-  <div id="output" class="result"></div>
 </div>
 <script>
 let dictionary = {};
@@ -143,12 +27,12 @@ let selectedIndex = -1;
 const featuredWords = [
   "nutinamit",
   "katinchʼabʼej",
+  "qachʼabʼal",
   "jun",
   "xekitzoqopij",
   "ubʼajixik",
   "retzʼabʼaʼl",
   "kixkitzuqu"
-
 ];
 
 const input = document.getElementById('word-input');
@@ -165,7 +49,7 @@ Promise.all([
   dictionary = dict;
   wordlist = words;
   renderFeatured();
-  renderList(wordlist.slice(0, 100));
+  renderList(wordlist);
   statusEl.textContent = 'Type to filter ' + wordlist.length.toLocaleString() + ' words';
 }).catch(err => {
   statusEl.textContent = 'Error loading dictionary.';
@@ -184,14 +68,14 @@ function escapeHtml(str) {
 }
 
 function renderFeatured() {
-  chipsEl.innerHTML = featuredWords.map(w =>
-    '<span class="featured-chip" data-word="' + escapeHtml(w) + '">' + escapeHtml(w) + '</span>'
-  ).join('');
+  chipsEl.innerHTML = 'Try these: ' + featuredWords.map(w =>
+    '<code data-word="' + escapeHtml(w) + '">' + escapeHtml(w) + '</code>'
+  ).join(' ');
 }
 
 function filterWords(query) {
   const q = normalize(query);
-  if (!q) return wordlist.slice(0, 100);
+  if (!q) return wordlist;
 
   const matches = wordlist.filter(w => normalize(w).includes(q));
 
@@ -205,7 +89,7 @@ function filterWords(query) {
     return aNorm.localeCompare(bNorm);
   });
 
-  return matches.slice(0, 100);
+  return matches;
 }
 
 function renderList(words) {
@@ -223,15 +107,17 @@ function renderList(words) {
 function updateStatus(query) {
   const q = query.trim();
   if (!q) {
-    statusEl.textContent = 'Showing first 100 of ' + wordlist.length.toLocaleString() + ' words';
+    statusEl.textContent = wordlist.length.toLocaleString() + ' words';
   } else {
     const total = wordlist.filter(w => normalize(w).includes(normalize(q))).length;
-    statusEl.textContent = 'Showing ' + filtered.length + ' of ' + total + ' matches for "' + escapeHtml(q) + '"';
+    statusEl.textContent = total + ' matches for "' + escapeHtml(q) + '"';
   }
 }
 
 function selectWord(word) {
   input.value = word;
+  renderList(filterWords(word));
+  updateStatus(word);
   analyse(word);
 }
 
@@ -281,7 +167,7 @@ listEl.addEventListener('click', function(e) {
 
 // Featured chips click
 chipsEl.addEventListener('click', function(e) {
-  const chip = e.target.closest('.featured-chip');
+  const chip = e.target.closest('code');
   if (!chip) return;
   selectWord(chip.dataset.word);
 });
@@ -293,7 +179,7 @@ function analyse(raw) {
 
   const entry = dictionary[key];
   if (!entry) {
-    output.innerHTML = '<p class="no-match">No analysis found for <strong>' + escapeHtml(raw) + '</strong>.</p>';
+    output.innerHTML = '<div class="tool-callout">No analysis found for <strong>' + escapeHtml(raw) + '</strong>.</div>';
     return;
   }
 
@@ -301,7 +187,7 @@ function analyse(raw) {
   const analyses = entry.analyses || [];
 
   if (morphemes.length === 0 && analyses.length === 0) {
-    output.innerHTML = '<p class="no-match">No analysis found for <strong>' + escapeHtml(raw) + '</strong>.</p>';
+    output.innerHTML = '<div class="tool-callout">No analysis found for <strong>' + escapeHtml(raw) + '</strong>.</div>';
     return;
   }
 
@@ -321,7 +207,7 @@ function analyse(raw) {
       html += '<div class="seg-chain">';
       seg.forEach((m, i) => {
         html += '<span class="morpheme">' + escapeHtml(m) + '</span>';
-        if (i < seg.length - 1) html += '<span class="seg-sep">&gt;</span>';
+        if (i < seg.length - 1) html += '<span class="seg-sep">-</span>';
       });
       html += '</div>';
     });
@@ -329,11 +215,11 @@ function analyse(raw) {
   }
 
   if (analyses.length > 0) {
-    html += '<table><tr><th>#</th><th>Analysis</th></tr>';
+    html += '<table class="tool-table"><thead><tr><th>#</th><th>Analysis</th></tr></thead><tbody>';
     analyses.forEach((a, i) => {
       html += '<tr><td>' + (i + 1) + '</td><td><code>' + escapeHtml(a) + '</code></td></tr>';
     });
-    html += '</table>';
+    html += '</tbody></table>';
   }
 
   output.innerHTML = html;
