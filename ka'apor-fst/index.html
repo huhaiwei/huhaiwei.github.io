@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ka'apor fst 🌳 · haiwei hu</title>
+<meta name="description" content="Linguistics PhD student with a background in computer science, economics, and statistics.  Interested in low-resource NLP; morphology, semantics, & syntax; language documentation and revitalisation;  and speech community-centered language technologies. Student of Kaqchikel, K'iche', and Maaya T'aan.">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+
+  <header>
+    <h1><a href="/">haiwei hu</a> <span aria-hidden="true"></span></h1>
+    <nav>
+      <a href="/">about</a><span class="sep">·</span>
+      <a href="/biloxi-dictionary/">Biloxi dictionary</a><span class="sep">·</span>
+      <a href="/ka'apor-fst/">Ka'apor fst</a><span class="sep">·</span>
+      <a href="/k'iche'-fst/">K'iche' fst</a><span class="sep">·</span>
+      <a href="/cv/">cv</a>
+    </nav>
+  </header>
+
+  <hr class="rule">
+
+  <style>
+/* Page-specific styles only — shared components live in style.css */
+.fst-gen-out {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 1rem;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  background: rgba(85, 97, 63, 0.05);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+.fst-hint {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.fst-hint code {
+  cursor: pointer;
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  color: var(--accent);
+  background: rgba(85, 97, 63, 0.05);
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.fst-hint code:hover {
+  background: rgba(85, 97, 63, 0.15);
+}
+.fst-ud-form {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+}
+.fst-ud-form:hover {
+  text-decoration: underline;
+}
+.fst-note {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  max-width: 200px;
+  line-height: 1.4;
+}
+.fst-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  color: var(--ink);
+}
+details {
+  margin-bottom: 1rem;
+}
+details summary {
+  outline: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+details > div {
+  margin-top: 1rem;
+  padding-left: 1rem;
+}
+</style>
+
+<div class="tool-page">
+  <ul class="tool-tabs" id="fst-tabs">
+    <li><a class="fst-tab-link active" href="#" onclick="show('fst');return false">FST</a></li>
+    <li><a class="fst-tab-link" href="#" onclick="show('eval');return false">UD Eval</a></li>
+  </ul>
+
+  <div id="tab-fst" class="tool-tab active">
+    <div class="tool-grid">
+      <div class="fst-section">
+        <h3>Parse</h3>
+        <input type="text" class="tool-search" id="pi" placeholder="Enter a Ka'apor form or click one below" oninput="runParse()" />
+        <div class="fst-hint" id="parse-hint"></div>
+        <div id="po"></div>
+      </div>
+
+      <div class="fst-section">
+        <h3>Generate</h3>
+        
+        <details open>
+          <summary>Verbal</summary>
+          <div>
+            <div class="fst-form-group">
+              <label class="tool-label">Root</label>
+              <select class="tool-search" id="g-root" onchange="runGenV()"></select>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div>
+                <label class="tool-label">Person</label>
+                <select class="tool-search" id="g-pers" onchange="runGenV()">
+                  <option value="1sg">1SG — a-</option>
+                  <option value="2sg">2SG — re-</option>
+                  <option value="1pl">1PL — ja-</option>
+                  <option value="2pl">2PL — pe-</option>
+                  <option value="3">3 — u-/o-/∅</option>
+                </select>
+              </div>
+              <div>
+                <label class="tool-label">Voice</label>
+                <select class="tool-search" id="g-voice" onchange="runGenV()">
+                  <option value="">Plain</option>
+                  <option value="cau">CAUS — mu-</option>
+                  <option value="refl">REFL — ju-</option>
+                  <option value="reflcau">REFL+CAUS — ju-mu-</option>
+                  <option value="comit">COMIT — ru-</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="tool-label">Tense</label>
+              <select class="tool-search" id="g-tense" onchange="runGenV()">
+                <option value="">Non-future</option>
+                <option value="fut">FUT — -ta</option>
+              </select>
+            </div>
+            <div class="fst-gen-out" id="gvo">—</div>
+            <div id="gvb"></div>
+          </div>
+        </details>
+
+        <details open>
+          <summary>Nominal</summary>
+          <div>
+            <div>
+              <label class="tool-label">Lemma</label>
+              <select class="tool-search" id="g-nom" onchange="runGenN()"></select>
+            </div>
+            <div>
+              <label class="tool-label">Possessor</label>
+              <select class="tool-search" id="n-pos" onchange="runGenN()">
+                <option value="">None</option>
+                <option value="12">1st/2nd (r-/∅)</option>
+                <option value="3">3rd (h-/i-)</option>
+              </select>
+            </div>
+            <div>
+              <label><input type="checkbox" id="n-nlz" onchange="runGenN()"> -ha (Nominalization)</label>
+              <label style="margin-left:1rem"><input type="checkbox" id="n-plu" onchange="runGenN()"> -ta (Plural)</label>
+              <label style="margin-left:1rem"><input type="checkbox" id="n-aff" onchange="runGenN()"> -ke (Affinitive)</label>
+            </div>
+            <div>
+              <label class="tool-label">Modifier</label>
+              <select class="tool-search" id="n-mod" onchange="runGenN()">
+                <option value="">None</option>
+                <option value="ʔi">-ʔi (Diminutive)</option>
+                <option value="hũ">-hũ (Augmentative)</option>
+                <option value="te">-te (Exactness)</option>
+              </select>
+            </div>
+            <div class="fst-gen-out" id="gno">—</div>
+            <div id="gnb"></div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-eval" class="tool-tab">
+    <h3>UD Evaluation</h3>
+    <p class="tool-lead">Verbal and annotated nominal tokens run through the Python FST. Click a surface form to parse it in the FST tab.</p>
+
+    <div class="tool-bar">
+      <strong>Filter:</strong>
+      <label><input type="checkbox" id="f-all" checked onchange="filterUD()"> All</label>
+      <label><input type="checkbox" id="f-err" onchange="filterUD()"> Errors</label>
+      <label><input type="checkbox" id="f-mis" onchange="filterUD()"> Mismatches</label>
+      <label><input type="checkbox" id="f-nol" onchange="filterUD()"> Not in lexicon</label>
+      <label><input type="checkbox" id="f-vrb" checked onchange="filterUD()"> VERB/AUX</label>
+      <label><input type="checkbox" id="f-nom" checked onchange="filterUD()"> NOUN/PRON/PROPN</label>
+      <span style="color:var(--ink-soft);margin-left:1rem" id="ud-count"></span>
+    </div>
+
+    <div class="tool-bar">
+      <strong>Key:</strong>
+      <span><span class="ok">✓</span> exact</span>
+      <span><span class="wrn">⚑</span> partial</span>
+      <span><span class="wrn">+</span> FST only</span>
+      <span><span class="bad">✗</span> mismatch</span>
+      <span><span class="bad">✗ ERROR</span></span>
+      <span><span class="mut">—</span> no lex</span>
+      <span><span class="mut">·</span> empty</span>
+    </div>
+
+    <div class="tool-tbl-wrap">
+      <table class="tool-table">
+        <thead>
+          <tr>
+            <th>Sent</th>
+            <th>Form</th>
+            <th>Lemma</th>
+            <th>UPOS</th>
+            <th>DepRel</th>
+            <th>UD Features</th>
+            <th>FST Top</th>
+            <th>Match</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody id="ud-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+fetch('/assets/json/kaapor_lexicon.json')
+  .then(r => r.json())
+  .then(DATA => {
+    
+const VERB_LEX = {};
+for (const v of DATA.lexicon.verbs || []) {
+  if (!VERB_LEX[v.stem]) VERB_LEX[v.stem] = [];
+  VERB_LEX[v.stem].push(v);
+}
+function fillSelect(id, items, val, lab) {
+  const s = document.getElementById(id); if (!s) return; s.innerHTML = '';
+  for (const item of items) {
+    const o = document.createElement('option');
+    o.value = item[val];
+    o.textContent = item[val] + (item[lab] ? ' — ' + item[lab] : '');
+    s.appendChild(o);
+  }
+}
+const verbDropItems = []; const seenV = new Set();
+for (const v of DATA.lexicon.verbs || []) {
+  if (!seenV.has(v.lemma)) { seenV.add(v.lemma); verbDropItems.push(v); }
+}
+fillSelect('g-root', verbDropItems, 'lemma', 'gl');
+fillSelect('g-nom', [...(DATA.lexicon.nouns || []), ...(DATA.lexicon.pronouns || [])], 'lemma', 'gl');
+function getForm3P(e) {
+  return (e.cls === 'AgrSO' ? 'o' : e.cls === 'AgrSMono' ? 'u' : '') + e.stem;
+}
+function buildHints() {
+  const v = verbDropItems.slice(0,8).map(e => `<code onclick="fill('${getForm3P(e)}',true)">${getForm3P(e)}</code>`).join(' ');
+  const n = (DATA.lexicon.nouns || []).filter(e => e.gl).slice(0,5).map(e => `<code onclick="fill('${e.stem}ke',true)">${e.stem}ke</code>`).join(' ');
+  const hint = document.getElementById('parse-hint');
+  if (hint) hint.innerHTML = 'Verbal: ' + v + '<br>Nominal: ' + n;
+}
+buildHints();
+const PM = {'1sg':{Person:'1',Number:'Sing'}, '2sg':{Person:'2',Number:'Sing'}, '2sg2':{Person:'2',Number:'Sing'}, '1pl':{Person:'1',Number:'Plur'}, '2pl':{Person:'2',Number:'Plur'}, '3':{Person:'3'}};
+function parseVerb(surface) {
+  const sn = (surface.charAt(0).toLowerCase() + surface.slice(1)).replace(/[\u2019\u02BC]/g, "'");
+  const results = [];
+  for (const [, oSfx, oF] of DATA.outer_sfxs) {
+    if (oSfx && !sn.endsWith(oSfx)) continue;
+    const s1 = oSfx ? sn.slice(0, -oSfx.length) : sn;
+    for (const [fid, fSfx, fF] of DATA.fut_sfx) {
+      if (fSfx && !s1.endsWith(fSfx)) continue;
+      const s2 = fSfx ? s1.slice(0, -fSfx.length) : s1;
+      for (const [, iSfx, iF] of DATA.inner_sfxs) {
+        if (iSfx && !s2.endsWith(iSfx)) continue;
+        const s3 = iSfx ? s2.slice(0, -iSfx.length) : s2;
+        for (const [stem, entries] of Object.entries(VERB_LEX)) {
+          if (!s3.endsWith(stem)) continue;
+          const pre = s3.slice(0, s3.length - stem.length);
+          for (const entry of entries) {
+            for (const [vid, vpfx] of Object.entries(DATA.voice_prefixes)) {
+              let ppfx;
+              if (vpfx) {
+                if (pre.length < vpfx.length || pre.slice(-vpfx.length) !== vpfx) continue;
+                ppfx = pre.slice(0, pre.length - vpfx.length);
+              } else { ppfx = pre; }
+              const cls = (vid && vid !== '') ? 'AgrSPoly' : entry.cls;
+              const agr = DATA.agr_table[cls];
+              if (!agr) continue;
+              for (const [pid, pfx] of Object.entries(agr)) {
+                if (ppfx === pfx) {
+                  const feats = {...(PM[pid] || {})};
+                  if (vid) feats['Voice'] = vid.charAt(0).toUpperCase() + vid.slice(1);
+                  Object.assign(feats, iF, fF, oF);
+                  results.push({lemma: entry.lemma, stem, gl: entry.gl, person: pid, voice: vid, tense: fid, cls: entry.cls, feats, vt: entry.vt});
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  const seen = new Set(), unique = [];
+  for (const r of results) {
+    const k = `${r.lemma}|${r.person}|${r.voice}|${r.tense}`;
+    if (!seen.has(k)) { seen.add(k); unique.push(r); }
+  }
+  return unique;
+}
+function parseNominal(surface) {
+  const results = [];
+  for (const e of DATA.lexicon.nouns || []) {
+    const rel = e.cont || e.ncont;
+    const ms = [];
+    
+    // stem + no affix
+    if (e.stem === surface) {
+      ms.push({form: e.stem, gl: e.gl, feat: 'Lemma='+e.lemma, slot:'root', syn:'NP root'});
+      results.push({type:'NOUN',lemma:e.lemma,tags:e.tags,gl:e.gl,feats:{},morphs:ms});
+    }
+    
+    // stem + -ke (Aff)
+    if (e.stem+'ke' === surface) {
+      ms.push({form: e.stem, gl: e.gl, feat: 'Lemma='+e.lemma, slot:'root', syn:'NP root'});
+      ms.push({form:'-ke',gl:'AFF',feat:'Case=Aff',slot:'nom',syn:'KP'});
+      results.push({type:'NOUN',lemma:e.lemma,tags:e.tags,gl:e.gl,feats:{Case:'Aff'},morphs:[...ms]});
+    }
+    
+    // stem + -ha (Nomzr)
+    if (e.stem+'ha' === surface) {
+      ms.push({form: e.stem, gl: e.gl, feat: 'Lemma='+e.lemma, slot:'root', syn:'NP root'});
+      ms.push({form:'-ha',gl:'NOMLZ',feat:'Nomzr=Circ',slot:'nom',syn:'nP'});
+      results.push({type:'NOUN',lemma:e.lemma,tags:e.tags,gl:e.gl,feats:{Nomzr:'Circ'},morphs:[...ms]});
+    }
+    
+    // possessor + stem (relational nouns)
+    if (rel) {
+      // i-stem
+      if ('i'+e.stem === surface) {
+        ms.push({form:'i-', gl:'POSS.3', feat:'Person=3', slot:'nom', syn:'D/PossP'});
+        ms.push({form: e.stem, gl: e.gl, feat: 'Lemma='+e.lemma, slot:'root', syn:'NP root'});
+        results.push({type:'NOUN',lemma:e.lemma,tags:e.tags,gl:e.gl,feats:{Person:'3'},morphs:[...ms]});
+      }
+      // i-stem-ke
+      if ('i'+e.stem+'ke' === surface) {
+        ms.push({form:'i-', gl:'POSS.3', feat:'Person=3', slot:'nom', syn:'D/PossP'});
+        ms.push({form: e.stem, gl: e.gl, feat: 'Lemma='+e.lemma, slot:'root', syn:'NP root'});
+        ms.push({form:'-ke',gl:'AFF',feat:'Case=Aff',slot:'nom',syn:'KP'});
+        results.push({type:'NOUN',lemma:e.lemma,tags:e.tags,gl:e.gl,feats:{Person:'3',Case:'Aff'},morphs:[...ms]});
+      }
+    }
+  }
+  
+  for (const e of DATA.lexicon.pronouns || []) {
+    if (e.stem === surface) {
+      const ms = [{form: e.stem, gl: e.gl, feat: 'Lemma='+e.lemma, slot:'root', syn:'PronP'}];
+      results.push({type:'PRON',lemma:e.lemma,tags:e.tags,gl:e.gl,feats:{},morphs:ms});
+    }
+    if (e.stem+'ke' === surface) {
+      const ms = [{form: e.stem, gl: e.gl, feat: 'Lemma='+e.lemma, slot:'root', syn:'PronP'}, {form:'-ke',gl:'AFF',feat:'Case=Aff',slot:'nom',syn:'KP'}];
+      results.push({type:'PRON',lemma:e.lemma,tags:e.tags,gl:e.gl,feats:{Case:'Aff'},morphs:ms});
+    }
+  }
+  
+  for (const e of DATA.lexicon.propns || []) {
+    if (e.stem === surface) {
+      const ms = [{form: e.stem, gl: e.gl, feat: 'Lemma='+e.lemma, slot:'root', syn:'PropN'}];
+      results.push({type:'PROPN',lemma:e.lemma,tags:'+PROPN',gl:e.gl,feats:{},morphs:ms});
+    }
+    if (e.stem+'ke' === surface) {
+      const ms = [{form: e.stem, gl: e.gl, feat: 'Lemma='+e.lemma, slot:'root', syn:'PropN'}, {form:'-ke',gl:'AFF',feat:'Case=Aff',slot:'nom',syn:'KP'}];
+      results.push({type:'PROPN',lemma:e.lemma,tags:'+PROPN',gl:e.gl,feats:{Case:'Aff'},morphs:ms});
+    }
+  }
+  
+  return results;
+}
+function fill(v, switchTab) {
+  document.getElementById('pi').value = v;
+  if (switchTab) show('fst');
+  runParse();
+}
+function morphTable(ms) {
+  return `<table class="tool-table"><thead><tr><th>Form</th><th>Gloss</th><th>Features</th><th>Slot</th><th>Head</th></tr></thead><tbody>` +
+  ms.map(m => `<tr><td><code>${m.form}</code></td><td>${m.gl}</td><td style="font-size:0.85rem">${m.feat||''}</td><td style="font-size:0.85rem">${m.slot}</td><td style="font-size:0.85rem;color:var(--ink-soft)">${m.syn}</td></tr>`).join('') + `</tbody></table>`;
+}
+function chips(feats) {
+  return '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.75rem;margin-bottom:1rem;">' + Object.entries(feats).map(([k,v]) => `<span class="pill">${k}=${v}</span>`).join('') + '</div>';
+}
+function runParse() {
+  const v = document.getElementById('pi').value.trim();
+  const out = document.getElementById('po');
+  if (!v) { out.innerHTML = ''; return; }
+  const all = [...parseVerb(v), ...parseNominal(v)];
+  if (!all.length) {
+    out.innerHTML = `<div class="tool-callout">No analysis for <code>${v}</code>.</div>`;
+    return;
+  }
+  let html = '';
+  all.forEach((r, i) => {
+    if (all.length > 1) html += `<p style="font-size:0.85rem;color:var(--ink-soft);font-weight:600;margin:${i>0?'0.75rem 0 0.25rem':'0.25rem 0'}">Analysis ${i+1}/${all.length}</p>`;
+    if (r.type && r.morphs) {
+      html += morphTable(r.morphs) + chips(r.feats);
+    } else if (r.type) {
+      html += `<table class="tool-table"><thead><tr><th>Lemma</th><th>Type</th><th>Analysis</th><th>Features</th></tr></thead><tbody><tr><td><code>${r.lemma}</code></td><td>${r.type}</td><td><code>${r.lemma+(r.tags||'')}</code></td><td style="font-size:0.85rem">${Object.entries(r.feats).map(([k,v])=>k+'='+v).join('|')||'—'}</td></tr></tbody></table>`;
+    } else {
+      const ms = [{form: DATA.agr_table[r.cls]?.[r.person] || '∅', gl: r.person.toUpperCase(), feat: PM[r.person] ? Object.entries(PM[r.person]).map(([k,v])=>k+'='+v).join('|') : '', slot: 'agrs', syn: 'AgrsP'}];
+      if (r.voice==='refl'||r.voice==='reflcau') ms.push({form:'ju-',gl:'REFL',feat:'Voice=Refl',slot:'voice',syn:'VoiceP'});
+      if (r.voice==='cau' ||r.voice==='reflcau') ms.push({form:'mu-',gl:'CAUS',feat:'Voice=Cau', slot:'voice',syn:'VoiceP'});
+      if (r.voice==='comit') ms.push({form:'ru-',gl:'COMIT',feat:'Voice=Comit',slot:'voice',syn:'VoiceP'});
+      ms.push({form: r.stem, gl: r.gl, feat: 'Lemma='+r.lemma, slot: 'root', syn: 'v/VP'});
+      if (r.tense === 'fut') ms.push({form:'-ta', gl:'FUT', feat:'Tense=Fut', slot:'tense', syn:'TP'});
+      html += morphTable(ms) + chips(r.feats);
+      if (r.vt && r.voice === 'cau') html += `<div class="tool-callout">⚠ '${r.lemma}' is transitive. Kakumasu §6 restricts mu- CAUS to intransitive bases.</div>`;
+    }
+  });
+  out.innerHTML = html;
+}
+function runGenV() {
+  const lemma = document.getElementById('g-root').value;
+  const pid = document.getElementById('g-pers').value;
+  const vid = document.getElementById('g-voice').value;
+  const tid = document.getElementById('g-tense').value;
+  const entry = DATA.lexicon.verbs.find(v => v.lemma === lemma);
+  if (!entry) return;
+  const cls = (vid && vid !== '') ? 'AgrSPoly' : entry.cls;
+  const agr = DATA.agr_table[cls];
+  if (!agr || !(pid in agr)) { document.getElementById('gvo').textContent = '(not valid)'; return; }
+  const ppfx = agr[pid];
+  const vpfx = DATA.voice_prefixes[vid] || '';
+  const futRow = DATA.fut_sfx.find(([id]) => id === tid) || DATA.fut_sfx[DATA.fut_sfx.length - 1];
+  const tsfx = futRow[1];
+  const surface = ppfx + vpfx + entry.stem + tsfx;
+  document.getElementById('gvo').textContent = surface;
+  const ms = [{form: ppfx || '∅', gl: pid.toUpperCase(), feat: PM[pid] ? Object.entries(PM[pid]).map(([k,v])=>k+'='+v).join('|') : '', slot: 'agrs', syn: 'AgrsP'}];
+  if (vid==='refl'||vid==='reflcau') ms.push({form:'ju-',gl:'REFL',feat:'Voice=Refl',slot:'voice',syn:'VoiceP'});
+  if (vid==='cau' ||vid==='reflcau') ms.push({form:'mu-',gl:'CAUS',feat:'Voice=Cau', slot:'voice',syn:'VoiceP'});
+  if (vid==='comit') ms.push({form:'ru-',gl:'COMIT',feat:'Voice=Comit',slot:'voice',syn:'VoiceP'});
+  ms.push({form: entry.stem, gl: entry.gl, feat: 'Lemma='+lemma, slot: 'root', syn: 'v/VP'});
+  if (tsfx) ms.push({form:'-ta', gl:'FUT', feat:'Tense=Fut', slot:'tense', syn:'TP'});
+  document.getElementById('gvb').innerHTML = morphTable(ms);
+}
+function runGenN() {
+  const lemma = document.getElementById('g-nom').value;
+  const addNlz = document.getElementById('n-nlz').checked;
+  const modVal = document.getElementById('n-mod').value;
+  const addPlu = document.getElementById('n-plu').checked;
+  const addAff = document.getElementById('n-aff').checked;
+  const posVal = document.getElementById('n-pos').value;
+  const entry = [...(DATA.lexicon.nouns || []), ...(DATA.lexicon.pronouns || [])].find(n => n.lemma === lemma);
+  if (!entry) return;
+  let surface = entry.stem;
+  const ms = [];
+  if (posVal === '3') {
+    if (entry.noun_h) {
+      surface = 'h' + surface;
+      ms.push({form:'h-', gl:'POSS.3', feat:'Person=3', slot:'nom', syn:'D/PossP'});
+    } else if (entry.cont || entry.ncont) {
+      surface = 'i' + surface;
+      ms.push({form:'i-', gl:'POSS.3', feat:'Person=3', slot:'nom', syn:'D/PossP'});
+    }
+  } else if (posVal === '12' && entry.noun_h) {
+    surface = 'r' + surface;
+    ms.push({form:'r-', gl:'POSS.1/2', feat:'Rel=Cont', slot:'nom', syn:'D/PossP'});
+  }
+  ms.push({form: entry.stem, gl: entry.gl, feat: 'Lemma='+lemma, slot:'root', syn:'NP root'});
+  if (addNlz) { surface += 'ha'; ms.push({form:'-ha',gl:'NOMLZ',feat:'Nomzr=Circ',slot:'nom',syn:'nP'}); }
+  if (modVal==='ʔi') { surface+='ʔi'; ms.push({form:'-ʔi',gl:'DIMIN',feat:'Dimin=Yes',slot:'nom',syn:'Mod'}); }
+  else if (modVal==='hũ') { surface+='hũ'; ms.push({form:'-hũ',gl:'AUGM',feat:'Intense=Yes',slot:'nom',syn:'Mod'}); }
+  else if (modVal==='te') { surface+='te'; ms.push({form:'-te',gl:'EXACT',feat:'Intense=Yes',slot:'nom',syn:'Mod'}); }
+  if (addPlu) { surface+='ta'; ms.push({form:'-ta',gl:'PL',feat:'Number=Plur',slot:'nom',syn:'NumP'}); }
+  if (addAff) { surface+='ke'; ms.push({form:'-ke',gl:'AFF',feat:'Case=Aff',slot:'nom',syn:'KP'}); }
+  document.getElementById('gno').textContent = surface;
+  const warn = (entry.cont || entry.noun_h) && !posVal ? `<div class="tool-callout">This noun is typically possessed. Select a possessor above.</div>` : '';
+  document.getElementById('gnb').innerHTML = warn + morphTable(ms);
+}
+let udData = null;
+function buildUD() { if (udData) return; udData = DATA.ud_eval || []; filterUD(); }
+function filterUD() {
+  if (!udData) { buildUD(); return; }
+  const all = document.getElementById('f-all').checked;
+  const err = document.getElementById('f-err').checked;
+  const mis = document.getElementById('f-mis').checked;
+  const nol = document.getElementById('f-nol').checked;
+  const vrb = document.getElementById('f-vrb').checked;
+  const nom = document.getElementById('f-nom').checked;
+  const rows = udData.filter(r => {
+    const um = (vrb && ['VERB','AUX'].includes(r.upos)) || (nom && ['NOUN','PRON','PROPN'].includes(r.upos));
+    if (!um) return false;
+    if (all) return true;
+    if (err && r.match==='error') return true;
+    if (mis && r.match==='mismatch') return true;
+    if (nol && r.match==='no_lex') return true;
+    return false;
+  });
+  const ic = {exact:'<span class="ok">✓</span>', partial:'<span class="wrn">⚑</span>', mismatch:'<span class="bad">✗</span>', error:'<span class="bad">✗ ERROR</span>', no_lex:'<span class="mut">—</span>', fst_only:'<span class="wrn">+</span>', empty:'<span class="mut">·</span>'};
+  document.getElementById('ud-body').innerHTML = rows.map(r => `<tr><td style="font-size:0.85rem;color:var(--ink-soft)">${r.sent_id}</td><td class="fst-ud-form" onclick="fill('${r.form}',true)">${r.form}</td><td style="font-size:0.85rem"><code>${r.lemma}</code></td><td style="font-size:0.85rem">${r.upos}</td><td style="font-size:0.85rem;color:var(--ink-soft)">${r.deprel}</td><td style="font-size:0.8rem"><code>${r.feats}</code></td><td style="font-size:0.85rem"><code style="color:var(--accent)">${r.fst_top||'—'}</code></td><td style="white-space:nowrap">${ic[r.match]||''}</td><td><div class="fst-note">${r.note||''}</div></td></tr>`).join('');
+  document.getElementById('ud-count').textContent = `${rows.length} rows`;
+}
+function show(id) {
+  ['fst','eval'].forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    if (el) el.classList.toggle('active', t === id);
+  });
+  document.querySelectorAll('.fst-tab-link').forEach((el, i) => {
+    el.classList.toggle('active', ['fst','eval'][i] === id);
+  });
+  if (id === 'eval') buildUD();
+}
+  window.show    = show;
+  window.fill    = fill;
+  window.runParse = runParse;
+  window.runGenV  = runGenV;
+  window.runGenN  = runGenN;
+  window.filterUD = filterUD;
+
+  runGenV();
+  runGenN();
+})
+.catch(err => {
+  console.error('Lexicon load failed:', err);
+  document.querySelector('.tool-page').innerHTML =
+    '<p style="color:#dc3545;padding:1rem">Failed to load lexicon. ' +
+    'Check that <code>/assets/json/kaapor_lexicon.json</code> exists.</p>';
+});
+</script>
+
+  <footer>
+    © 2026 haiwei hu · built with jekyll, hosted on github pages
+  </footer>
+
+</main>
+</body>
+</html>
