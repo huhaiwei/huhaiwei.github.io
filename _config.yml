@@ -27,3 +27,7 @@ exclude:
   - Gemfile.lock
   - LICENSE
   - vendor
+  - package.json
+  - package-lock.json
+  - bin
+  - _scripts

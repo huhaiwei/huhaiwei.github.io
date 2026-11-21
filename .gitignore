@@ -1,13 +1,19 @@
+# jekyll build output and caches
 _site
-.bundle
 .sass-cache
 .jekyll-cache
 .jekyll-metadata
-.DS_store
-.ruby-version
-.tweet-cache
-Gemfile.lock
-assets/libs/
-node_modules/
+.bundle
 vendor
+
+# tooling
+node_modules/
+.ruby-lsp/
+.ruby-version
 .idea
+
+# macOS
+.DS_Store
+
+# cv drafts (cv page is hidden for now)
+assets/pdf/
