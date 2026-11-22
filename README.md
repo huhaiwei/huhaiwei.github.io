@@ -17,14 +17,12 @@ Personal site for Haiwei Hu, served at <https://huhaiwei.github.io>. It's a smal
 
 ## Running locally
 
-Open the repo in the devcontainer (VS Code → "Reopen in Container"). It runs `bin/entry_point.sh` on attach, and that serves the site at <http://localhost:8080> with live reload.
-
-Without the container:
-
 ```sh
 bundle install
 bundle exec jekyll serve
 ```
+
+`bin/entry_point.sh` does the same on port 8080 with live reload, and restarts Jekyll whenever `_config.yml` changes.
 
 ## Deploying
 

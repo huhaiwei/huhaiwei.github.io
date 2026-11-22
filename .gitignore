@@ -12,6 +12,9 @@ node_modules/
 .ruby-version
 .idea
 
+# local dev environment (kept on this machine only)
+.devcontainer/
+
 # macOS
 .DS_Store
 
