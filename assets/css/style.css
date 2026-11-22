@@ -86,6 +86,17 @@ nav .sep {
   line-height: 1.9;
 }
 
+.photo {
+  width: 92px;
+  height: 92px;
+  border-radius: 3px;
+  object-fit: cover;
+  float: right;
+  margin: 0 0 1rem 1.4rem;
+  filter: grayscale(15%);
+  border: 1px solid var(--rule);
+}
+
 p {
   margin: 0 0 1.1rem;
 }
@@ -135,6 +146,7 @@ footer {
 footer a { color: inherit; }
 
 @media (max-width: 480px) {
+  .photo { float: none; display: block; margin: 0 0 1.2rem; }
   main { padding: 3rem 1.25rem 4rem; }
 }
 
